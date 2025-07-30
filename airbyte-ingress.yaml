@@ -1,0 +1,63 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: airbyte-ingress
+  namespace: airbyte
+  annotations:
+    # --- Force HTTPS & strict transport ---
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/hsts: "true"
+    nginx.ingress.kubernetes.io/hsts-max-age: "63072000"
+    nginx.ingress.kubernetes.io/hsts-preload: "true"
+
+    # --- TLS versions & ciphers (overrides controller defaults if needed) ---
+    nginx.ingress.kubernetes.io/ssl-protocols: "TLSv1.3 TLSv1.2"
+    nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "true"
+
+
+    # --- Basic rate‑limiting ---
+    # nginx.ingress.kubernetes.io/limit-rps: "150"
+    # nginx.ingress.kubernetes.io/limit-burst: "100"
+    # nginx.ingress.kubernetes.io/limit-connections: "200" :contentReference[oaicite:1]{index=1}
+
+    # --- ModSecurity WAF on just this host (optional if global) ---
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true" :contentReference[oaicite:2]{index=2}
+
+    # --- Request‑size & timeouts ---
+    nginx.ingress.kubernetes.io/proxy-body-size: "32m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+
+
+spec:
+  ingressClassName: public
+  tls:
+    - hosts:
+        - dataflow.cedia.org.ec
+      secretName: dataflow-tls
+  rules:
+    - host: dataflow.cedia.org.ec
+      http:
+        paths:
+          - path: /api/v1/connector_builder/
+            pathType: Prefix
+            backend:
+              service:
+                name: airbyte-airbyte-connector-builder-server-svc
+                port:
+                  number: 80
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: airbyte-airbyte-server-svc
+                port:
+                  number: 8001
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: airbyte-airbyte-webapp-svc
+                port:
+                  number: 80
