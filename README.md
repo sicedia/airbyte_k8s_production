@@ -78,7 +78,7 @@ To use `kubectl` instead of `microk8s kubectl`, add this alias:
 
 ```sh
 echo "alias kubectl='microk8s kubectl'" >> ~/.bashrc
-echo "alias kubectl='microk8s heml3'" >> ~/.bashrc
+echo "alias kubectl='microk8s helm3'" >> ~/.bashrc
 source ~/.bashrc
 
 ```
