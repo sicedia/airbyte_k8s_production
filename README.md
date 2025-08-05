@@ -1,6 +1,6 @@
 # Airbyte On-Premise Deployment Guide (CEDIA)
 
-This guide explains how to deploy a single-node Kubernetes cluster using MicroK8s and install Airbyte using Helm, step by step. It is designed for internal use at CEDIA.
+This guide explains how to deploy a single-node Kubernetes cluster using MicroK8s and install Airbyte using Helm, step by step. It is designed for internal use.
 
 ---
 
