@@ -1,4 +1,4 @@
-# Airbyte On-Premise Deployment Guide (CEDIA)
+# Airbyte On-Premise Deployment Guide 
 
 This guide explains how to deploy a single-node Kubernetes cluster using MicroK8s and install Airbyte using Helm, step by step. It is designed for internal use.
 
@@ -104,11 +104,11 @@ kubectl get pods --all-namespaces
 ## 8. Prepare Namespace and Helm Repo for Airbyte
 
 Before continuing, **make sure to allocate all Airbyte-related files (such as `airbyte-values.yaml`, TLS certificates, and any configuration files) in the directory `/opt/airbyte` on your server**.  
-Set the correct permissions so the user `cedia` can access and manage these files:
+Set the correct permissions so the user `userubuntu` can access and manage these files:
 
 ```sh
 sudo mkdir -p /opt/airbyte
-sudo chown -R cedia:cedia /opt/airbyte
+sudo chown -R userubuntu:userubuntu /opt/airbyte
 ```
 
 Now, create a namespace for Airbyte and add the Airbyte Helm repository:
